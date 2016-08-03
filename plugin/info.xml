@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<pluginInfo xmlns="http://www.urbancode.com/InfoXMLSchema_v1" xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <!--
+  
+  **author name IS required**
+  
+  The Author Section is used to give credit to the author of the plugin.
+  Name is the only required element/attribute, but feel free to also include your email, 
+  website  or bio to allow users of your plugin to praise your work, ask questions 
+  or share their use case to help grow your plugin's functionality. 
+  -->
+  
+   <author name="Niklaus Hirt">
+            <organization>IBM</organization>
+            <email>nikh@ch.ibm.com</email>
+            <website>http://urbancode.com</website>
+            <bio/>
+        </author>
+
+
+        <integration type="Automation" />
+
+        <tool-description>Integration with InfluxDB.</tool-description>
+
+        <meta-html>
+            <meta content="" name="description" />
+            <meta content="http, rest" name="keywords" />
+        </meta-html>
+
+
+  <tool-description>Integration with InfluxDB.</tool-description>
+  
+  <meta-html>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>  
+  </meta-html>
+    
+  <release-version>2</release-version>  
+    
+  <release-notes>
+	  <release-note plugin-version="1">
+	    Initial version
+	  </release-note>
+	  <release-note plugin-version="2">
+	    Community GitHub Release
+	  </release-note>
+    
+  </release-notes>
+</pluginInfo>

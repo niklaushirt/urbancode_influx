@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <header>
+            <identifier id="com.urbancode.air.plugin.influxdb" name="InfluxDB" version="2" />
+            <description>
+                Plugin for inserting Infos to InfluxD.
+            </description>
+            <tag>Ops/InfluxDB</tag>
+        </header>
+        <step-type name="Insert Status to InfluxDB">
+            <description>
+               Insert Status to InfluxD.
+            </description>
+            <properties>
+
+                <property name="url" required="true">
+                    <property-ui type="textBox" label="URL" default-value="http://localhost:8086" description="The complete URL to send the HTTP request to." />
+                </property>
+                
+                 <property name="db" required="true">
+                    <property-ui type="textBox" label="Influx Database Name" default-value="deployDB" description="The complete URL to send the HTTP request to." />
+                </property>
+                
+                 <property name="host" required="true">
+                    <property-ui type="textBox" label="Host" default-value="${p:resource.name}" description="" />
+                </property>
+                
+                 <property name="system" required="true">
+                    <property-ui type="textBox" label="System/Environment" default-value="${p:environment.name}" description="" />
+                </property>
+                
+                 <property name="component" required="true">
+                    <property-ui type="textBox" label="Component" default-value="${p:component.name}" description="." />
+                </property>
+                
+
+                <property name="status">
+                    <property-ui type="selectBox" label="Status" description="The Status to be inserted." />
+                    <value label="OK">1</value>
+                    <value label="CRITICAL">2</value>
+                    <value label="ERROR">4</value>
+                    <value label="UNDEFINED">99</value>
+                </property>
+
+              
+            </properties>
+
+            <post-processing>
+                <![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]>
+            </post-processing>
+            <command program="${GROOVY_HOME}/bin/groovy">
+                <arg value="-cp" />
+                <arg path="classes:lib/commons-httpclient-3.1.jar:lib/gson-2.2.4.jar:lib/groovy-json-2.4.0.jar:lib/commons-codec-1.2.jar:lib/commons-logging-1.1.3.jar:lib/groovy-plugin-utils-1.0.jar" />
+                <arg file="postToInflux.groovy" />
+                <arg file="${PLUGIN_INPUT_PROPS}" />
+                <arg file="${PLUGIN_OUTPUT_PROPS}" />
+            </command>
+        </step-type>
+        
+        <step-type name="Insert Data to InfluxDB">
+            <description>
+               Insert Data to InfluxD.
+            </description>
+            <properties>
+
+                <property name="url" required="true">
+                    <property-ui type="textBox" label="URL" default-value="http://localhost:8086" description="The complete URL to send the HTTP request to." />
+                </property>
+                
+                 <property name="db" required="true">
+                    <property-ui type="textBox" label="Influx Database Name" default-value="deployDB" description="The complete URL to send the HTTP request to." />
+                </property>
+                
+                 <property name="data" required="true">
+                    <property-ui type="textBox" label="Data" default-value="deployment_status,host=myHost,system=COMMIT,component=myComponent value=1" description="" />
+                </property>
+                
+               
+
+              
+            </properties>
+
+            <post-processing>
+                <![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]>
+            </post-processing>
+            <command program="${GROOVY_HOME}/bin/groovy">
+                <arg value="-cp" />
+                <arg path="classes:lib/commons-httpclient-3.1.jar:lib/gson-2.2.4.jar:lib/groovy-json-2.4.0.jar:lib/commons-codec-1.2.jar:lib/commons-logging-1.1.3.jar:lib/groovy-plugin-utils-1.0.jar" />
+                <arg file="postToInfluxData.groovy" />
+                <arg file="${PLUGIN_INPUT_PROPS}" />
+                <arg file="${PLUGIN_OUTPUT_PROPS}" />
+            </command>
+        </step-type>
+    </plugin>
